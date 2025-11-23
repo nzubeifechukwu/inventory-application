@@ -3,7 +3,7 @@ const pool = require("./pool");
 async function getAllStock() {
   const { rows } = await pool.query(`
         SELECT
-          title book,
+          title,
           COALESCE(first_name, ' ', last_name) author,
           genre,
           quantity_in_stock,
