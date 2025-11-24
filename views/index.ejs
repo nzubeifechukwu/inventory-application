@@ -6,15 +6,13 @@
     <title>Home | <%= title %></title>
   </head>
   <body>
-    <nav></nav>
+    <nav><%- include('partials/navbar.ejs')%></nav>
     <header></header>
     <main>
-      <% if (books.length) {%>
-        <% books.forEach((book) => { %>
-            <article><h2><%= book.title %></h2></article>
-        <%}); %>
-      <% } else { %>
-        <p>No books found. Click ADD BOOK to add a new book.</p>
+      <% if (books.length) {%> <% books.forEach((book) => { %>
+      <article><h2><%= book.title %></h2></article>
+      <%}); %> <% } else { %>
+      <p>No books found. Click <strong>Add Book</strong> to add a new book.</p>
       <% } %>
     </main>
     <footer></footer>
