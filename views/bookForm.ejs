@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Book | <%= title %></title>
+  </head>
+  <body>
+    <header>
+      <nav><a href="/">Go Home</a></nav>
+      <h1>Add New Book</h1>
+    </header>
+    <main>
+      <form action="/new" method="post">
+        <div class="input-div">
+          <label for="title">Title *</label
+          ><input type="text" name="title" id="title" required />
+        </div>
+        <div class="input-div">
+          <label for="first_name">Author First Name *</label
+          ><input type="text" name="first_name" id="first_name" required />
+        </div>
+        <div class="input-div">
+          <label for="last_name">Author Last Name *</label
+          ><input type="text" name="last_name" id="last_name" required />
+        </div>
+        <div class="input-div">
+          <label for="genre">Genre</label
+          ><input
+            type="text"
+            placeholder="Choose from Literature, Science, Philosophy, Psychology, History, Self-Help"
+            name="genre"
+            id="genre"
+          />
+        </div>
+        <div class="button-div"><button type="submit">Submit</button></div>
+      </form>
+    </main>
+    <footer></footer>
+  </body>
+</html>

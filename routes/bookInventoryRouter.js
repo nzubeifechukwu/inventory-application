@@ -3,6 +3,8 @@ const bookInventoryControllers = require("../controllers/bookInventoryController
 
 const bookInventoryRouter = Router();
 
-bookInventoryRouter.get("/", bookInventoryControllers.getAllStock);
+bookInventoryRouter.get("/", bookInventoryControllers.getAllBooks);
+bookInventoryRouter.get("/new", bookInventoryControllers.addNewBookGet);
+bookInventoryRouter.post("/new", bookInventoryControllers.addNewBookPost);
 
 module.exports = bookInventoryRouter;
