@@ -20,30 +20,9 @@ CREATE TABLE IF NOT EXISTS books (
   title VARCHAR(255),
   selling_price NUMERIC(10, 2) NOT NULL,
   author_id INTEGER REFERENCES authors(author_id),
-  genre_id INTEGER REFERENCES genres(genre_id)
-);
-
-CREATE TABLE IF NOT EXISTS inventory (
-  inventory_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  book_id INTEGER REFERENCES books(book_id) UNIQUE,
+  genre_id INTEGER REFERENCES genres(genre_id),
   quantity_in_stock INTEGER,
-  minimum_stock_level INTEGER,
-  average_cost NUMERIC(10, 2),
-  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS sales (
-  sale_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  sale_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  customer_name VARCHAR(100)
-);
-
-CREATE TABLE IF NOT EXISTS sale_items (
-  sale_item_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  sale_id INTEGER REFERENCES sales(sale_id),
-  book_id INTEGER REFERENCES books(book_id),
-  quantity_sold INTEGER,
-  unit_price NUMERIC(10, 2)
+  quantity_sold INTEGER
 );
 `;
 
