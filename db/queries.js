@@ -16,9 +16,21 @@ async function getAllBooks() {
 }
 
 async function insertBook(title, first_name, last_name, genre) {
-  const authorInsertQuery =
-    "INSERT INTO authors (first_name, last_name) VALUES ($1, $2) RETURNING author_id";
-  const authorResult = await pool.query(authorInsertQuery, [
+  const authorUpsertQuery = `
+    WITH existing_author AS (
+      SELECT author_id FROM authors WHERE first_name = $1 AND $2 = last_name
+    ),
+    new_author AS (
+      INSERT INTO authors (first_name, last_name)
+      SELECT $1, $2
+      WHERE NOT EXISTS (SELECT 1 FROM existing_author)
+      RETURNING author_id
+    )
+    SELECT author_id FROM existing_author
+    UNION ALL
+    SELECT author_id FROM new_author;
+  `;
+  const authorResult = await pool.query(authorUpsertQuery, [
     first_name,
     last_name,
   ]);
