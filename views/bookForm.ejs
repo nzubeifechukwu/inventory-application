@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>New Book | <%= title %></title>
+    <title>Add Book | <%= title %></title>
   </head>
   <body>
     <header>
@@ -24,14 +24,17 @@
           <label for="last_name">Author Last Name *</label
           ><input type="text" name="last_name" id="last_name" required />
         </div>
-        <div class="input-div">
-          <label for="genre">Genre</label
-          ><input
-            type="text"
-            placeholder="Choose from Literature, Science, Philosophy, Psychology, History, Self-Help"
-            name="genre"
-            id="genre"
-          />
+        <div class="select-div">
+          <label for="genre">Genre</label>
+          <select name="genre" id="genre">
+            <option value="Literature">Literature</option>
+            <option value="Science">Science</option>
+            <option value="Philosophy">Philosophy</option>
+            <option value="Psychology">Psychology</option>
+            <option value="History">History</option>
+            <option value="Self-Help">Self-Help</option>
+            <option value="Other" selected>Other</option>
+          </select>
         </div>
         <div class="button-div"><button type="submit">Submit</button></div>
       </form>

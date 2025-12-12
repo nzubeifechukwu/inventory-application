@@ -1,11 +1,13 @@
-const { genres } = require("../utils/utils");
 const pool = require("./pool");
 
 async function getAllBooks() {
   const { rows } = await pool.query(`
         SELECT
           title,
-          COALESCE(first_name, ' ', last_name) author,
+          selling_price,
+          quantity_in_stock,
+          quantity_sold,
+          CONCAT(first_name, ' ', last_name) author,
           genre
         FROM
           books b
@@ -15,7 +17,7 @@ async function getAllBooks() {
   return rows;
 }
 
-async function insertBook(title, first_name, last_name, genre) {
+async function insertBook(title, first_name, last_name, genre, selling_price) {
   const authorUpsertQuery = `
     WITH existing_author AS (
       SELECT author_id FROM authors WHERE first_name = $1 AND $2 = last_name
@@ -49,16 +51,14 @@ async function insertBook(title, first_name, last_name, genre) {
     WHERE genre = $1
     LIMIT 1;
   `;
-  const genreResult = await pool.query(genreInsertQuery, [
-    genres.includes(genre) ? genre : "Other",
-  ]);
+  const genreResult = await pool.query(genreInsertQuery, [genre]);
   const genre_id = genreResult.rows[0].genre_id;
 
   const bookInsertQuery = `
     INSERT INTO books (title, selling_price, author_id, genre_id)
     VALUES ($1, $2, $3, $4)
   `;
-  await pool.query(bookInsertQuery, [title, "30", author_id, genre_id]);
+  await pool.query(bookInsertQuery, [title, selling_price, author_id, genre_id]);
 }
 
 module.exports = { getAllBooks, insertBook };

@@ -7,12 +7,13 @@ async function getAllBooks(req, res) {
 }
 
 function addNewBookGet(req, res) {
-  res.render("bookForm", { title: title });
+  res.render("bookForm", { title: title, links: links });
 }
 
 async function addNewBookPost(req, res) {
-  const { title, first_name, last_name, genre } = req.body;
-  await db.insertBook(title, first_name, last_name, genre);
+  console.log(req.body);
+  const { title, first_name, last_name, genre, selling } = req.body;
+  await db.insertBook(title, first_name, last_name, genre, selling_price);
   res.redirect("/");
 }
 
