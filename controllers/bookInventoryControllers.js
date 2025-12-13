@@ -12,7 +12,7 @@ function addNewBookGet(req, res) {
 
 async function addNewBookPost(req, res) {
   console.log(req.body);
-  const { title, first_name, last_name, genre, selling } = req.body;
+  const { title, first_name, last_name, genre, selling_price } = req.body;
   await db.insertBook(title, first_name, last_name, genre, selling_price);
   res.redirect("/");
 }
