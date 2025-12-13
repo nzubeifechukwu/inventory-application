@@ -17,7 +17,15 @@ async function getAllBooks() {
   return rows;
 }
 
-async function insertBook(title, first_name, last_name, genre, selling_price) {
+async function insertBook(
+  title,
+  first_name,
+  last_name,
+  genre,
+  selling_price,
+  quantity_in_stock,
+  quantity_sold
+) {
   const authorUpsertQuery = `
     WITH existing_author AS (
       SELECT author_id FROM authors WHERE first_name = $1 AND $2 = last_name
@@ -55,14 +63,16 @@ async function insertBook(title, first_name, last_name, genre, selling_price) {
   const genre_id = genreResult.rows[0].genre_id;
 
   const bookInsertQuery = `
-    INSERT INTO books (title, selling_price, author_id, genre_id)
-    VALUES ($1, $2, $3, $4)
+    INSERT INTO books (title, selling_price, author_id, genre_id, quantity_in_stock, quantity_sold)
+    VALUES ($1, $2, $3, $4, $5, $6)
   `;
   await pool.query(bookInsertQuery, [
     title,
     selling_price,
     author_id,
     genre_id,
+    quantity_in_stock,
+    quantity_sold,
   ]);
 }
 
