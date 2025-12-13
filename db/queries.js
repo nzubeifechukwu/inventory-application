@@ -58,7 +58,12 @@ async function insertBook(title, first_name, last_name, genre, selling_price) {
     INSERT INTO books (title, selling_price, author_id, genre_id)
     VALUES ($1, $2, $3, $4)
   `;
-  await pool.query(bookInsertQuery, [title, selling_price, author_id, genre_id]);
+  await pool.query(bookInsertQuery, [
+    title,
+    selling_price,
+    author_id,
+    genre_id,
+  ]);
 }
 
 module.exports = { getAllBooks, insertBook };
