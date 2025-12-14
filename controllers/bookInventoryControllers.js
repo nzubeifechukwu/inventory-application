@@ -1,17 +1,16 @@
 const db = require("../db/queries");
-const { title, links } = require("../utils/utils");
+const { title, links, getByLinks } = require("../utils/utils");
 
 async function getAllBooks(req, res) {
   const books = await db.getAllBooks();
-  res.render("index", { books: books, title: title, links: links });
+  res.render("index", { books, title, links });
 }
 
 function addNewBookGet(req, res) {
-  res.render("bookForm", { title: title, links: links });
+  res.render("bookForm", { title, links });
 }
 
 async function addNewBookPost(req, res) {
-  console.log(req.body);
   const {
     title,
     first_name,
@@ -21,6 +20,7 @@ async function addNewBookPost(req, res) {
     quantity_in_stock,
     quantity_sold,
   } = req.body;
+
   await db.insertBook(
     title,
     first_name,
@@ -30,7 +30,13 @@ async function addNewBookPost(req, res) {
     parseInt(quantity_in_stock, 10),
     parseInt(quantity_sold, 10)
   );
+
   res.redirect("/");
 }
 
-module.exports = { getAllBooks, addNewBookGet, addNewBookPost };
+async function getBy(req, res) {
+  const books = await db.getAllBooks();
+  res.render("viewBy", { title, links, getByLinks, books });
+}
+
+module.exports = { getAllBooks, addNewBookGet, addNewBookPost, getBy };
