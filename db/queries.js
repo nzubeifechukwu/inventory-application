@@ -38,6 +38,178 @@ async function getBooksByGenre(genre) {
   return rows;
 }
 
+async function getBooksByPrice(price) {
+  if (price === "cheap") {
+    const { rows } = await pool.query(`
+    SELECT
+      title,
+      selling_price,
+      quantity_in_stock,
+      quantity_sold,
+      CONCAT(first_name, ' ', last_name) author,
+      genre
+    FROM
+      books b
+      JOIN authors a ON b.author_id = a.author_id
+      JOIN genres g ON b.genre_id = g.genre_id
+    WHERE selling_price < 20
+    `);
+    return rows;
+  } else if (price === "affordable") {
+    const { rows } = await pool.query(`
+    SELECT
+      title,
+      selling_price,
+      quantity_in_stock,
+      quantity_sold,
+      CONCAT(first_name, ' ', last_name) author,
+      genre
+    FROM
+      books b
+      JOIN authors a ON b.author_id = a.author_id
+      JOIN genres g ON b.genre_id = g.genre_id
+    WHERE selling_price >= 20 AND selling_price <= 50
+    `);
+    return rows;
+  } else if (price === "pricey") {
+    const { rows } = await pool.query(`
+    SELECT
+      title,
+      selling_price,
+      quantity_in_stock,
+      quantity_sold,
+      CONCAT(first_name, ' ', last_name) author,
+      genre
+    FROM
+      books b
+      JOIN authors a ON b.author_id = a.author_id
+      JOIN genres g ON b.genre_id = g.genre_id
+    WHERE selling_price > 50 AND selling_price <= 100
+    `);
+    return rows;
+  } else {
+    const { rows } = await pool.query(`
+    SELECT
+      title,
+      selling_price,
+      quantity_in_stock,
+      quantity_sold,
+      CONCAT(first_name, ' ', last_name) author,
+      genre
+    FROM
+      books b
+      JOIN authors a ON b.author_id = a.author_id
+      JOIN genres g ON b.genre_id = g.genre_id
+    WHERE selling_price > 100
+    `);
+    return rows;
+  }
+}
+
+async function getBooksByQtyInStock(qtyStock) {
+  if (qtyStock === "low") {
+    const { rows } = await pool.query(`
+    SELECT
+      title,
+      selling_price,
+      quantity_in_stock,
+      quantity_sold,
+      CONCAT(first_name, ' ', last_name) author,
+      genre
+    FROM
+      books b
+      JOIN authors a ON b.author_id = a.author_id
+      JOIN genres g ON b.genre_id = g.genre_id
+    WHERE quantity_in_stock < 20
+    `);
+    return rows;
+  } else if (qtyStock === "medium") {
+    const { rows } = await pool.query(`
+    SELECT
+      title,
+      selling_price,
+      quantity_in_stock,
+      quantity_sold,
+      CONCAT(first_name, ' ', last_name) author,
+      genre
+    FROM
+      books b
+      JOIN authors a ON b.author_id = a.author_id
+      JOIN genres g ON b.genre_id = g.genre_id
+    WHERE quantity_in_stock >= 20 AND quantity_in_stock <= 50
+    `);
+    return rows;
+  } else {
+    const { rows } = await pool.query(`
+    SELECT
+      title,
+      selling_price,
+      quantity_in_stock,
+      quantity_sold,
+      CONCAT(first_name, ' ', last_name) author,
+      genre
+    FROM
+      books b
+      JOIN authors a ON b.author_id = a.author_id
+      JOIN genres g ON b.genre_id = g.genre_id
+    WHERE quantity_in_stock > 50
+    `);
+    return rows;
+  }
+}
+
+async function getBooksByQtySold(qtySold) {
+  if (qtySold === "low") {
+    const { rows } = await pool.query(`
+    SELECT
+      title,
+      selling_price,
+      quantity_in_stock,
+      quantity_sold,
+      CONCAT(first_name, ' ', last_name) author,
+      genre
+    FROM
+      books b
+      JOIN authors a ON b.author_id = a.author_id
+      JOIN genres g ON b.genre_id = g.genre_id
+    WHERE quantity_sold < 20
+    `);
+    return rows;
+  } else if (qtySold === "moderate") {
+    const { rows } = await pool.query(`
+    SELECT
+      title,
+      selling_price,
+      quantity_in_stock,
+      quantity_sold,
+      CONCAT(first_name, ' ', last_name) author,
+      genre
+    FROM
+      books b
+      JOIN authors a ON b.author_id = a.author_id
+      JOIN genres g ON b.genre_id = g.genre_id
+    WHERE quantity_sold >= 20 AND quantity_sold <= 50
+    `);
+    return rows;
+  } else {
+    const { rows } = await pool.query(`
+    SELECT
+      title,
+      selling_price,
+      quantity_in_stock,
+      quantity_sold,
+      CONCAT(first_name, ' ', last_name) author,
+      genre
+    FROM
+      books b
+      JOIN authors a ON b.author_id = a.author_id
+      JOIN genres g ON b.genre_id = g.genre_id
+    WHERE quantity_sold > 50
+    `);
+    return rows;
+  }
+}
+
 async function insertBook(
   title,
   first_name,
@@ -97,4 +269,11 @@ async function insertBook(
   ]);
 }
 
-module.exports = { getAllBooks, insertBook, getBooksByGenre };
+module.exports = {
+  getAllBooks,
+  insertBook,
+  getBooksByGenre,
+  getBooksByPrice,
+  getBooksByQtyInStock,
+  getBooksByQtySold,
+};
