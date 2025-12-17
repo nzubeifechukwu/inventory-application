@@ -17,6 +17,27 @@ async function getAllBooks() {
   return rows;
 }
 
+async function getBooksByGenre(genre) {
+  const { rows } = await pool.query(
+    `
+    SELECT
+      title,
+      selling_price,
+      quantity_in_stock,
+      quantity_sold,
+      CONCAT(first_name, ' ', last_name) author,
+      genre
+    FROM
+      books b
+      JOIN authors a ON b.author_id = a.author_id
+      JOIN genres g ON b.genre_id = g.genre_id
+    WHERE genre = $1
+    `,
+    [genre]
+  );
+  return rows;
+}
+
 async function insertBook(
   title,
   first_name,
@@ -76,4 +97,4 @@ async function insertBook(
   ]);
 }
 
-module.exports = { getAllBooks, insertBook };
+module.exports = { getAllBooks, insertBook, getBooksByGenre };

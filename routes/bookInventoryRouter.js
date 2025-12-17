@@ -12,6 +12,10 @@ bookInventoryRouter.get(
   bookInventoryControllers.getByGenres
 );
 bookInventoryRouter.get(
+  "/view-by/genres/:genre",
+  bookInventoryControllers.getBooksByGenre
+);
+bookInventoryRouter.get(
   "/view-by/prices",
   bookInventoryControllers.getByPrices
 );

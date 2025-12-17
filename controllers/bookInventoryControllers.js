@@ -14,6 +14,18 @@ async function getAllBooks(req, res) {
   res.render("index", { books, title, links });
 }
 
+async function getBooksByGenre(req, res) {
+  const { genre } = req.params;
+  const books = await db.getBooksByGenre(genre);
+  res.render("viewByGenres", {
+    books,
+    title,
+    links,
+    getByLinks,
+    getByGenresLinks,
+  });
+}
+
 function addNewBookGet(req, res) {
   res.render("bookForm", { title, links });
 }
@@ -30,10 +42,10 @@ async function addNewBookPost(req, res) {
   } = req.body;
 
   await db.insertBook(
-    title,
-    first_name,
-    last_name,
-    genre,
+    title.toLowerCase(),
+    first_name.toLowerCase(),
+    last_name.toLowerCase(),
+    genre.toLowerCase(),
     parseFloat(selling_price).toFixed(2),
     parseInt(quantity_in_stock, 10),
     parseInt(quantity_sold, 10)
@@ -93,6 +105,7 @@ async function getByQtySold(req, res) {
 
 module.exports = {
   getAllBooks,
+  getBooksByGenre,
   addNewBookGet,
   addNewBookPost,
   getBy,
