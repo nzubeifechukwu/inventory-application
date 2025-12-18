@@ -2,7 +2,6 @@ const db = require("../db/queries");
 const {
   title,
   links,
-  getByLinks,
   getByGenresLinks,
   getByPricesLinks,
   getByQtyInStockLinks,
@@ -12,54 +11,6 @@ const {
 async function getAllBooks(req, res) {
   const books = await db.getAllBooks();
   res.render("index", { books, title, links });
-}
-
-async function getBooksByGenre(req, res) {
-  const { genre } = req.params;
-  const books = await db.getBooksByGenre(genre);
-  res.render("viewByGenres", {
-    books,
-    title,
-    links,
-    getByLinks,
-    getByGenresLinks,
-  });
-}
-
-async function getBooksByPrice(req, res) {
-  const { price } = req.params;
-  const books = await db.getBooksByPrice(price);
-  res.render("viewByPrices", {
-    books,
-    title,
-    links,
-    getByLinks,
-    getByPricesLinks,
-  });
-}
-
-async function getBooksByQtyInStock(req, res) {
-  const { qtyStock } = req.params;
-  const books = await db.getBooksByQtyInStock(qtyStock);
-  res.render("viewByQtyInStock", {
-    books,
-    title,
-    links,
-    getByLinks,
-    getByQtyInStockLinks,
-  });
-}
-
-async function getBooksByQtySold(req, res) {
-  const { qtySold } = req.params;
-  const books = await db.getBooksByQtySold(qtySold);
-  res.render("viewByQtySold", {
-    books,
-    title,
-    links,
-    getByLinks,
-    getByQtySoldLinks,
-  });
 }
 
 function addNewBookGet(req, res) {
@@ -90,18 +41,12 @@ async function addNewBookPost(req, res) {
   res.redirect("/");
 }
 
-async function getBy(req, res) {
-  const books = await db.getAllBooks();
-  res.render("viewBy", { title, links, getByLinks, books });
-}
-
 async function getByGenres(req, res) {
   const books = await db.getAllBooks();
   res.render("viewByGenres", {
     title,
     links,
     books,
-    getByLinks,
     getByGenresLinks,
   });
 }
@@ -112,7 +57,6 @@ async function getByPrices(req, res) {
     title,
     links,
     books,
-    getByLinks,
     getByPricesLinks,
   });
 }
@@ -123,7 +67,6 @@ async function getByQtyInStock(req, res) {
     title,
     links,
     books,
-    getByLinks,
     getByQtyInStockLinks,
   });
 }
@@ -134,7 +77,50 @@ async function getByQtySold(req, res) {
     title,
     links,
     books,
-    getByLinks,
+    getByQtySoldLinks,
+  });
+}
+
+async function getBooksByGenre(req, res) {
+  const { genre } = req.params;
+  const books = await db.getBooksByGenre(genre);
+  res.render("viewByGenres", {
+    books,
+    title,
+    links,
+    getByGenresLinks,
+  });
+}
+
+async function getBooksByPrice(req, res) {
+  const { price } = req.params;
+  const books = await db.getBooksByPrice(price);
+  res.render("viewByPrices", {
+    books,
+    title,
+    links,
+    getByPricesLinks,
+  });
+}
+
+async function getBooksByQtyInStock(req, res) {
+  const { qtyStock } = req.params;
+  const books = await db.getBooksByQtyInStock(qtyStock);
+  res.render("viewByQtyInStock", {
+    books,
+    title,
+    links,
+    getByQtyInStockLinks,
+  });
+}
+
+async function getBooksByQtySold(req, res) {
+  const { qtySold } = req.params;
+  const books = await db.getBooksByQtySold(qtySold);
+  res.render("viewByQtySold", {
+    books,
+    title,
+    links,
     getByQtySoldLinks,
   });
 }
@@ -147,7 +133,6 @@ module.exports = {
   getBooksByQtySold,
   addNewBookGet,
   addNewBookPost,
-  getBy,
   getByGenres,
   getByPrices,
   getByQtyInStock,

@@ -6,23 +6,6 @@ const bookInventoryRouter = Router();
 bookInventoryRouter.get("/", bookInventoryControllers.getAllBooks);
 bookInventoryRouter.get("/new", bookInventoryControllers.addNewBookGet);
 bookInventoryRouter.post("/new", bookInventoryControllers.addNewBookPost);
-bookInventoryRouter.get("/view-by", bookInventoryControllers.getBy);
-bookInventoryRouter.get(
-  "/view-by/genres/:genre",
-  bookInventoryControllers.getBooksByGenre
-);
-bookInventoryRouter.get(
-  "/view-by/prices/:price",
-  bookInventoryControllers.getBooksByPrice
-);
-bookInventoryRouter.get(
-  "/view-by/qty-stock/:qtyStock",
-  bookInventoryControllers.getBooksByQtyInStock
-);
-bookInventoryRouter.get(
-  "/view-by/qty-sold/:qtySold",
-  bookInventoryControllers.getBooksByQtySold
-);
 bookInventoryRouter.get(
   "/view-by/genres",
   bookInventoryControllers.getByGenres
@@ -38,6 +21,22 @@ bookInventoryRouter.get(
 bookInventoryRouter.get(
   "/view-by/qty-sold",
   bookInventoryControllers.getByQtySold
+);
+bookInventoryRouter.get(
+  "/view-by/genres/:genre",
+  bookInventoryControllers.getBooksByGenre
+);
+bookInventoryRouter.get(
+  "/view-by/prices/:price",
+  bookInventoryControllers.getBooksByPrice
+);
+bookInventoryRouter.get(
+  "/view-by/qty-stock/:qtyStock",
+  bookInventoryControllers.getBooksByQtyInStock
+);
+bookInventoryRouter.get(
+  "/view-by/qty-sold/:qtySold",
+  bookInventoryControllers.getBooksByQtySold
 );
 
 module.exports = bookInventoryRouter;
