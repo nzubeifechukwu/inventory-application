@@ -3,6 +3,7 @@ const pool = require("./pool");
 async function getAllBooks() {
   const { rows } = await pool.query(`
         SELECT
+          book_id id,
           title,
           selling_price,
           quantity_in_stock,
@@ -21,6 +22,7 @@ async function getBooksByGenre(genre) {
   const { rows } = await pool.query(
     `
     SELECT
+      book_id id,
       title,
       selling_price,
       quantity_in_stock,
@@ -42,6 +44,7 @@ async function getBooksByPrice(price) {
   if (price === "cheap") {
     const { rows } = await pool.query(`
     SELECT
+      book_id id,
       title,
       selling_price,
       quantity_in_stock,
@@ -58,6 +61,7 @@ async function getBooksByPrice(price) {
   } else if (price === "affordable") {
     const { rows } = await pool.query(`
     SELECT
+      book_id id,
       title,
       selling_price,
       quantity_in_stock,
@@ -74,6 +78,7 @@ async function getBooksByPrice(price) {
   } else if (price === "pricey") {
     const { rows } = await pool.query(`
     SELECT
+      book_id id,
       title,
       selling_price,
       quantity_in_stock,
@@ -90,6 +95,7 @@ async function getBooksByPrice(price) {
   } else {
     const { rows } = await pool.query(`
     SELECT
+      book_id id,
       title,
       selling_price,
       quantity_in_stock,
@@ -110,6 +116,7 @@ async function getBooksByQtyInStock(qtyStock) {
   if (qtyStock === "low") {
     const { rows } = await pool.query(`
     SELECT
+      book_id id,
       title,
       selling_price,
       quantity_in_stock,
@@ -126,6 +133,7 @@ async function getBooksByQtyInStock(qtyStock) {
   } else if (qtyStock === "medium") {
     const { rows } = await pool.query(`
     SELECT
+      book_id id,
       title,
       selling_price,
       quantity_in_stock,
@@ -142,6 +150,7 @@ async function getBooksByQtyInStock(qtyStock) {
   } else {
     const { rows } = await pool.query(`
     SELECT
+      book_id id,
       title,
       selling_price,
       quantity_in_stock,
@@ -162,6 +171,7 @@ async function getBooksByQtySold(qtySold) {
   if (qtySold === "low") {
     const { rows } = await pool.query(`
     SELECT
+      book_id id,
       title,
       selling_price,
       quantity_in_stock,
@@ -178,6 +188,7 @@ async function getBooksByQtySold(qtySold) {
   } else if (qtySold === "moderate") {
     const { rows } = await pool.query(`
     SELECT
+      book_id id,
       title,
       selling_price,
       quantity_in_stock,
@@ -194,6 +205,7 @@ async function getBooksByQtySold(qtySold) {
   } else {
     const { rows } = await pool.query(`
     SELECT
+      book_id id,
       title,
       selling_price,
       quantity_in_stock,
@@ -207,6 +219,99 @@ async function getBooksByQtySold(qtySold) {
     WHERE quantity_sold > 50
     `);
     return rows;
+  }
+}
+
+async function getBookDetails(id) {
+  const { rows } = await pool.query(
+    `
+    SELECT
+      book_id id,
+      title,
+      selling_price,
+      quantity_in_stock,
+      quantity_sold,
+      first_name,
+      last_name,
+      genre
+    FROM
+      books b
+      JOIN authors a ON b.author_id = a.author_id
+      JOIN genres g ON b.genre_id = g.genre_id
+    WHERE book_id = $1
+    `,
+    [id]
+  );
+  return rows;
+}
+
+async function updateBook(
+  book_id,
+  title,
+  first_name,
+  last_name,
+  genre,
+  selling_price,
+  quantity_in_stock,
+  quantity_sold
+) {
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    // 1. Handle the Author (Get ID or Insert New)
+    const authorRes = await client.query(
+      `INSERT INTO authors (first_name, last_name)
+       VALUES ($1, $2)
+       ON CONFLICT (first_name, last_name) 
+       DO UPDATE SET first_name = EXCLUDED.first_name
+       RETURNING author_id`,
+      [first_name, last_name]
+    );
+    const authorId = authorRes.rows[0].author_id;
+
+    // 2. Handle the Genre (Get ID or Insert New)
+    const genreRes = await client.query(
+      `INSERT INTO genres (genre)
+       VALUES ($1)
+       ON CONFLICT (genre) 
+       DO UPDATE SET genre = EXCLUDED.genre
+       RETURNING genre_id`,
+      [genre]
+    );
+    const genreId = genreRes.rows[0].genre_id;
+
+    // 3. Update the Book
+    const updateBookQuery = `
+      UPDATE books 
+      SET title = $1, 
+          selling_price = $2, 
+          author_id = $3, 
+          genre_id = $4, 
+          quantity_in_stock = $5, 
+          quantity_sold = $6
+      WHERE book_id = $7
+    `;
+
+    await client.query(updateBookQuery, [
+      title,
+      selling_price,
+      authorId,
+      genreId,
+      quantity_in_stock,
+      quantity_sold,
+      book_id,
+    ]);
+
+    await client.query("COMMIT");
+    return { success: true };
+  } catch (err) {
+    await client.query("ROLLBACK");
+    console.error("Error updating book:", err);
+    throw err;
+  } finally {
+    client.release();
   }
 }
 
@@ -276,4 +381,6 @@ module.exports = {
   getBooksByPrice,
   getBooksByQtyInStock,
   getBooksByQtySold,
+  getBookDetails,
+  updateBook,
 };

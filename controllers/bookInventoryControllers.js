@@ -125,6 +125,41 @@ async function getBooksByQtySold(req, res) {
   });
 }
 
+async function getBookDetails(req, res) {
+  const { id } = req.params;
+  const books = await db.getBookDetails(id);
+
+  if (!books.length) {
+    // throw error
+  }
+
+  res.render("editBook", { book: books[0], title, links });
+}
+
+async function editBook(req, res) {
+  const { id } = req.params;
+  const {
+    title,
+    first_name,
+    last_name,
+    genre,
+    selling_price,
+    quantity_in_stock,
+    quantity_sold,
+  } = req.body;
+  await db.updateBook(
+    id,
+    title.toLowerCase(),
+    first_name.toLowerCase(),
+    last_name.toLowerCase(),
+    genre.toLowerCase(),
+    parseFloat(selling_price).toFixed(2),
+    parseInt(quantity_in_stock, 10),
+    parseInt(quantity_sold, 10)
+  );
+  res.redirect("/");
+}
+
 module.exports = {
   getAllBooks,
   getBooksByGenre,
@@ -137,4 +172,6 @@ module.exports = {
   getByPrices,
   getByQtyInStock,
   getByQtySold,
+  getBookDetails,
+  editBook,
 };

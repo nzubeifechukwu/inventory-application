@@ -38,5 +38,7 @@ bookInventoryRouter.get(
   "/view-by/qty-sold/:qtySold",
   bookInventoryControllers.getBooksByQtySold
 );
+bookInventoryRouter.get("/:id/edit", bookInventoryControllers.getBookDetails);
+bookInventoryRouter.post("/:id/edit", bookInventoryControllers.editBook);
 
 module.exports = bookInventoryRouter;

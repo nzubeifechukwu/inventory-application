@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS books (
   quantity_in_stock INTEGER,
   quantity_sold INTEGER
 );
+
+ALTER TABLE authors ADD CONSTRAINT unique_author UNIQUE (first_name, last_name);
 `;
 
 async function main() {

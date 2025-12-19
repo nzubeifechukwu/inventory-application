@@ -13,6 +13,7 @@
       <article>
         <h2><%= book.title %></h2>
         <p><%= book.author %></p>
+        <a href="/<%= book.id %>/edit">Edit</a>
       </article>
       <%}); %> <% } else { %>
       <p>No books found. Click <strong>Add Book</strong> to add a new book.</p>
