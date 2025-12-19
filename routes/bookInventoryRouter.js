@@ -40,5 +40,7 @@ bookInventoryRouter.get(
 );
 bookInventoryRouter.get("/:id/edit", bookInventoryControllers.getBookDetails);
 bookInventoryRouter.post("/:id/edit", bookInventoryControllers.editBook);
+bookInventoryRouter.post("/:id/delete", bookInventoryControllers.deleteBook);
+bookInventoryRouter.post("/delete", bookInventoryControllers.deleteAllBooks);
 
 module.exports = bookInventoryRouter;

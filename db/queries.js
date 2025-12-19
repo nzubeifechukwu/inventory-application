@@ -374,6 +374,60 @@ async function insertBook(
   ]);
 }
 
+async function deleteBook(book_id) {
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    // 1. Get the author_id and genre_id of the book before we delete it
+    const findIdsQuery = `
+      SELECT author_id, genre_id 
+      FROM books 
+      WHERE book_id = $1
+    `;
+    const res = await client.query(findIdsQuery, [book_id]);
+
+    if (res.rows.length === 0) {
+      throw new Error("Book not found");
+    }
+
+    const { author_id, genre_id } = res.rows[0];
+
+    // 2. Delete the book
+    await client.query("DELETE FROM books WHERE book_id = $1", [book_id]);
+
+    // 3. Cleanup Author: Delete if no other books reference this author
+    const cleanupAuthorQuery = `
+      DELETE FROM authors 
+      WHERE author_id = $1 
+      AND NOT EXISTS (SELECT 1 FROM books WHERE author_id = $1)
+    `;
+    await client.query(cleanupAuthorQuery, [author_id]);
+
+    // 4. Cleanup Genre: Delete if no other books reference this genre
+    const cleanupGenreQuery = `
+      DELETE FROM genres 
+      WHERE genre_id = $1 
+      AND NOT EXISTS (SELECT 1 FROM books WHERE genre_id = $1)
+    `;
+    await client.query(cleanupGenreQuery, [genre_id]);
+
+    await client.query("COMMIT");
+    return { success: true };
+  } catch (err) {
+    await client.query("ROLLBACK");
+    console.error("Error deleting book and cleaning up:", err);
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+async function deleteAllBooks() {
+  await pool.query("TRUNCATE TABLE books CASCADE");
+}
+
 module.exports = {
   getAllBooks,
   insertBook,
@@ -383,4 +437,6 @@ module.exports = {
   getBooksByQtySold,
   getBookDetails,
   updateBook,
+  deleteBook,
+  deleteAllBooks,
 };

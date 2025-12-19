@@ -160,6 +160,17 @@ async function editBook(req, res) {
   res.redirect("/");
 }
 
+async function deleteBook(req, res) {
+  const { id } = req.params;
+  await db.deleteBook(id);
+  res.redirect("/");
+}
+
+async function deleteAllBooks(req, res) {
+  await db.deleteAllBooks();
+  res.redirect("/");
+}
+
 module.exports = {
   getAllBooks,
   getBooksByGenre,
@@ -174,4 +185,6 @@ module.exports = {
   getByQtySold,
   getBookDetails,
   editBook,
+  deleteBook,
+  deleteAllBooks,
 };
