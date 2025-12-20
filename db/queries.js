@@ -425,7 +425,8 @@ async function deleteBook(book_id) {
 }
 
 async function deleteAllBooks() {
-  await pool.query("TRUNCATE TABLE books CASCADE");
+  await pool.query("TRUNCATE TABLE genres CASCADE");
+  await pool.query("TRUNCATE TABLE authors CASCADE");
 }
 
 module.exports = {
