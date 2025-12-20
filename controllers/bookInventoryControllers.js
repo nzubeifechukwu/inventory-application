@@ -1,4 +1,5 @@
 const db = require("../db/queries");
+const CustomNotFoundError = require("../errors/CustomNotFoundError");
 const {
   title,
   links,
@@ -130,7 +131,7 @@ async function getBookDetails(req, res) {
   const books = await db.getBookDetails(id);
 
   if (!books.length) {
-    // throw error
+    throw new CustomNotFoundError(`book id ${id} not found`);
   }
 
   res.render("editBook", { book: books[0], title, links });
