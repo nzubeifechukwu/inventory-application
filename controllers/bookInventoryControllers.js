@@ -1,22 +1,59 @@
+const { validationResult, matchedData } = require("express-validator");
 const db = require("../db/queries");
 const CustomNotFoundError = require("../errors/CustomNotFoundError");
 const {
-  title,
+  pageTitle,
   links,
   getByGenresLinks,
   getByPricesLinks,
   getByQtyInStockLinks,
   getByQtySoldLinks,
 } = require("../utils/utils");
+const validateBookDetails = require("../inputValidators/inputValidator");
 
 async function getAllBooks(req, res) {
   const books = await db.getAllBooks();
-  res.render("index", { books, title, links });
+  res.render("index", { books, pageTitle, links });
 }
 
 function addNewBookGet(req, res) {
-  res.render("bookForm", { title, links });
+  res.render("bookForm", { pageTitle, links });
 }
+
+// const addNewBookPost = [
+//   validateBookDetails,
+//   async (req, res) => {
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       return res.status(400).render("bookForm", {
+//         pageTitle,
+//         links,
+//         errors: errors.array(),
+//       });
+//     }
+//     const {
+//       title,
+//       first_name,
+//       last_name,
+//       genre,
+//       selling_price,
+//       quantity_in_stock,
+//       quantity_sold,
+//     } = matchedData(req);
+
+//     await db.insertBook(
+//       title.toLowerCase(),
+//       first_name.toLowerCase(),
+//       last_name.toLowerCase(),
+//       genre.toLowerCase(),
+//       parseFloat(selling_price).toFixed(2),
+//       parseInt(quantity_in_stock, 10),
+//       parseInt(quantity_sold, 10)
+//     );
+
+//     res.redirect("/");
+//   },
+// ];
 
 async function addNewBookPost(req, res) {
   const {
@@ -45,7 +82,7 @@ async function addNewBookPost(req, res) {
 async function getByGenres(req, res) {
   const books = await db.getAllBooks();
   res.render("viewByGenres", {
-    title,
+    pageTitle,
     links,
     books,
     getByGenresLinks,
@@ -55,7 +92,7 @@ async function getByGenres(req, res) {
 async function getByPrices(req, res) {
   const books = await db.getAllBooks();
   res.render("viewByPrices", {
-    title,
+    pageTitle,
     links,
     books,
     getByPricesLinks,
@@ -65,7 +102,7 @@ async function getByPrices(req, res) {
 async function getByQtyInStock(req, res) {
   const books = await db.getAllBooks();
   res.render("viewByQtyInStock", {
-    title,
+    pageTitle,
     links,
     books,
     getByQtyInStockLinks,
@@ -75,7 +112,7 @@ async function getByQtyInStock(req, res) {
 async function getByQtySold(req, res) {
   const books = await db.getAllBooks();
   res.render("viewByQtySold", {
-    title,
+    pageTitle,
     links,
     books,
     getByQtySoldLinks,
@@ -87,7 +124,7 @@ async function getBooksByGenre(req, res) {
   const books = await db.getBooksByGenre(genre);
   res.render("viewByGenres", {
     books,
-    title,
+    pageTitle,
     links,
     getByGenresLinks,
   });
@@ -98,7 +135,7 @@ async function getBooksByPrice(req, res) {
   const books = await db.getBooksByPrice(price);
   res.render("viewByPrices", {
     books,
-    title,
+    pageTitle,
     links,
     getByPricesLinks,
   });
@@ -109,7 +146,7 @@ async function getBooksByQtyInStock(req, res) {
   const books = await db.getBooksByQtyInStock(qtyStock);
   res.render("viewByQtyInStock", {
     books,
-    title,
+    pageTitle,
     links,
     getByQtyInStockLinks,
   });
@@ -120,7 +157,7 @@ async function getBooksByQtySold(req, res) {
   const books = await db.getBooksByQtySold(qtySold);
   res.render("viewByQtySold", {
     books,
-    title,
+    pageTitle,
     links,
     getByQtySoldLinks,
   });
@@ -134,8 +171,48 @@ async function getBookDetails(req, res) {
     throw new CustomNotFoundError(`book id ${id} not found`);
   }
 
-  res.render("editBook", { book: books[0], title, links });
+  res.render("editBook", { book: books[0], pageTitle, links });
 }
+
+// const editBook = [
+//   validateBookDetails,
+//   async (req, res) => {
+//     const errors = validationResult(req);
+//     const { id } = req.params;
+//     if (!errors.isEmpty()) {
+//       const books = await db.getBookDetails(id);
+//       return res.status(400).render("editBook", {
+//         book: books[0],
+//         pageTitle,
+//         links,
+//         errors: errors.array(),
+//       });
+//     }
+//     // const { id } = req.params;
+//     const {
+//       title,
+//       first_name,
+//       last_name,
+//       genre,
+//       selling_price,
+//       quantity_in_stock,
+//       quantity_sold,
+//     } = matchedData(req);
+
+//     await db.updateBook(
+//       parseInt(id, 10),
+//       title.toLowerCase(),
+//       first_name.toLowerCase(),
+//       last_name.toLowerCase(),
+//       genre,
+//       parseFloat(selling_price).toFixed(2),
+//       parseInt(quantity_in_stock, 10),
+//       parseInt(quantity_sold, 10)
+//     );
+
+//     res.redirect("/");
+//   },
+// ];
 
 async function editBook(req, res) {
   const { id } = req.params;

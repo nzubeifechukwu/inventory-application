@@ -1,4 +1,4 @@
-const title = "Book Inventory";
+const pageTitle = "Book Inventory";
 const links = [
   { href: "/", text: "Home" },
   { href: "/new", text: "Add Book" },
@@ -39,7 +39,7 @@ const getByQtySoldLinks = [
 
 module.exports = {
   links,
-  title,
+  pageTitle,
   getByGenresLinks,
   getByPricesLinks,
   getByQtyInStockLinks,
