@@ -20,64 +20,40 @@ function addNewBookGet(req, res) {
   res.render("bookForm", { pageTitle, links });
 }
 
-// const addNewBookPost = [
-//   validateBookDetails,
-//   async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       return res.status(400).render("bookForm", {
-//         pageTitle,
-//         links,
-//         errors: errors.array(),
-//       });
-//     }
-//     const {
-//       title,
-//       first_name,
-//       last_name,
-//       genre,
-//       selling_price,
-//       quantity_in_stock,
-//       quantity_sold,
-//     } = matchedData(req);
+const addNewBookPost = [
+  validateBookDetails,
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render("bookForm", {
+        pageTitle,
+        links,
+        errors: errors.array(),
+      });
+    }
+    const {
+      title,
+      first_name,
+      last_name,
+      genre,
+      selling_price,
+      quantity_in_stock,
+      quantity_sold,
+    } = matchedData(req);
 
-//     await db.insertBook(
-//       title.toLowerCase(),
-//       first_name.toLowerCase(),
-//       last_name.toLowerCase(),
-//       genre.toLowerCase(),
-//       parseFloat(selling_price).toFixed(2),
-//       parseInt(quantity_in_stock, 10),
-//       parseInt(quantity_sold, 10)
-//     );
+    await db.insertBook(
+      title.toLowerCase(),
+      first_name.toLowerCase(),
+      last_name.toLowerCase(),
+      genre.toLowerCase(),
+      parseFloat(selling_price).toFixed(2),
+      parseInt(quantity_in_stock, 10),
+      parseInt(quantity_sold, 10)
+    );
 
-//     res.redirect("/");
-//   },
-// ];
-
-async function addNewBookPost(req, res) {
-  const {
-    title,
-    first_name,
-    last_name,
-    genre,
-    selling_price,
-    quantity_in_stock,
-    quantity_sold,
-  } = req.body;
-
-  await db.insertBook(
-    title.toLowerCase(),
-    first_name.toLowerCase(),
-    last_name.toLowerCase(),
-    genre.toLowerCase(),
-    parseFloat(selling_price).toFixed(2),
-    parseInt(quantity_in_stock, 10),
-    parseInt(quantity_sold, 10)
-  );
-
-  res.redirect("/");
-}
+    res.redirect("/");
+  },
+];
 
 async function getByGenres(req, res) {
   const books = await db.getAllBooks();
@@ -174,69 +150,44 @@ async function getBookDetails(req, res) {
   res.render("editBook", { book: books[0], pageTitle, links });
 }
 
-// const editBook = [
-//   validateBookDetails,
-//   async (req, res) => {
-//     const errors = validationResult(req);
-//     const { id } = req.params;
-//     if (!errors.isEmpty()) {
-//       const books = await db.getBookDetails(id);
-//       return res.status(400).render("editBook", {
-//         book: books[0],
-//         pageTitle,
-//         links,
-//         errors: errors.array(),
-//       });
-//     }
-//     // const { id } = req.params;
-//     const {
-//       title,
-//       first_name,
-//       last_name,
-//       genre,
-//       selling_price,
-//       quantity_in_stock,
-//       quantity_sold,
-//     } = matchedData(req);
+const editBook = [
+  validateBookDetails,
+  async (req, res) => {
+    const errors = validationResult(req);
+    const { id } = req.params;
+    if (!errors.isEmpty()) {
+      const books = await db.getBookDetails(id);
+      return res.status(400).render("editBook", {
+        book: books[0],
+        pageTitle,
+        links,
+        errors: errors.array(),
+      });
+    }
+    const {
+      title,
+      first_name,
+      last_name,
+      genre,
+      selling_price,
+      quantity_in_stock,
+      quantity_sold,
+    } = matchedData(req);
 
-//     await db.updateBook(
-//       parseInt(id, 10),
-//       title.toLowerCase(),
-//       first_name.toLowerCase(),
-//       last_name.toLowerCase(),
-//       genre,
-//       parseFloat(selling_price).toFixed(2),
-//       parseInt(quantity_in_stock, 10),
-//       parseInt(quantity_sold, 10)
-//     );
+    await db.updateBook(
+      id,
+      title.toLowerCase(),
+      first_name.toLowerCase(),
+      last_name.toLowerCase(),
+      genre.toLowerCase(),
+      parseFloat(selling_price).toFixed(2),
+      parseInt(quantity_in_stock, 10),
+      parseInt(quantity_sold, 10)
+    );
 
-//     res.redirect("/");
-//   },
-// ];
-
-async function editBook(req, res) {
-  const { id } = req.params;
-  const {
-    title,
-    first_name,
-    last_name,
-    genre,
-    selling_price,
-    quantity_in_stock,
-    quantity_sold,
-  } = req.body;
-  await db.updateBook(
-    id,
-    title.toLowerCase(),
-    first_name.toLowerCase(),
-    last_name.toLowerCase(),
-    genre.toLowerCase(),
-    parseFloat(selling_price).toFixed(2),
-    parseInt(quantity_in_stock, 10),
-    parseInt(quantity_sold, 10)
-  );
-  res.redirect("/");
-}
+    res.redirect("/");
+  },
+];
 
 async function deleteBook(req, res) {
   const { id } = req.params;

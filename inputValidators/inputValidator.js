@@ -21,6 +21,10 @@ const validateBookDetails = [
     .withMessage(`Author last name ${alphaErr}`)
     .isLength({ min: 1, max: 20 })
     .withMessage(`Author last name ${nameLengthErr}`),
+  body("genre").notEmpty(),
+  body("selling_price").isFloat({ min: 1 }),
+  body("quantity_in_stock").optional().isInt({ min: 0 }),
+  body("quantity_sold").optional().isInt({ min: 0 }),
 ];
 
 module.exports = validateBookDetails;
