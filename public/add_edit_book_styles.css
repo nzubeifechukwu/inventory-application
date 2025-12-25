@@ -70,7 +70,6 @@ button {
   border: none;
   border-radius: 10px;
   text-transform: uppercase;
-  /* align-self: center; */
   margin-top: 20px;
 }
 
@@ -80,4 +79,9 @@ button {
 
 footer {
   text-align: center;
+  margin: 30px;
+}
+
+footer a {
+  text-decoration: none;
 }

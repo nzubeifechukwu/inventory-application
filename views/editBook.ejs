@@ -47,6 +47,55 @@
         <div class="select-div">
           <label for="genre">Genre</label>
           <select name="genre" id="genre">
+            <% if (book.genre === "literature") { %>
+            <option value="Literature" selected>Literature</option>
+            <option value="Science">Science</option>
+            <option value="Philosophy">Philosophy</option>
+            <option value="Psychology">Psychology</option>
+            <option value="History">History</option>
+            <option value="Self-Help">Self-Help</option>
+            <option value="Other">Other</option>
+            <% } else if (book.genre === "science") { %>
+            <option value="Literature">Literature</option>
+            <option value="Science" selected>Science</option>
+            <option value="Philosophy">Philosophy</option>
+            <option value="Psychology">Psychology</option>
+            <option value="History">History</option>
+            <option value="Self-Help">Self-Help</option>
+            <option value="Other">Other</option>
+            <% } else if (book.genre === "philosophy") { %>
+            <option value="Literature">Literature</option>
+            <option value="Science">Science</option>
+            <option value="Philosophy" selected>Philosophy</option>
+            <option value="Psychology">Psychology</option>
+            <option value="History">History</option>
+            <option value="Self-Help">Self-Help</option>
+            <option value="Other">Other</option>
+            <% } else if (book.genre === "psychology") { %>
+            <option value="Literature">Literature</option>
+            <option value="Science">Science</option>
+            <option value="Philosophy">Philosophy</option>
+            <option value="Psychology" selected>Psychology</option>
+            <option value="History">History</option>
+            <option value="Self-Help">Self-Help</option>
+            <option value="Other">Other</option>
+            <% } else if (book.genre === "history") { %>
+            <option value="Literature">Literature</option>
+            <option value="Science">Science</option>
+            <option value="Philosophy">Philosophy</option>
+            <option value="Psychology">Psychology</option>
+            <option value="History" selected>History</option>
+            <option value="Self-Help">Self-Help</option>
+            <option value="Other">Other</option>
+            <% } else if (book.genre === "self-help") { %>
+            <option value="Literature">Literature</option>
+            <option value="Science">Science</option>
+            <option value="Philosophy">Philosophy</option>
+            <option value="Psychology">Psychology</option>
+            <option value="History">History</option>
+            <option value="Self-Help" selected>Self-Help</option>
+            <option value="Other">Other</option>
+            <% } else { %>
             <option value="Literature">Literature</option>
             <option value="Science">Science</option>
             <option value="Philosophy">Philosophy</option>
@@ -54,6 +103,7 @@
             <option value="History">History</option>
             <option value="Self-Help">Self-Help</option>
             <option value="Other" selected>Other</option>
+            <% } %>
           </select>
         </div>
         <div class="input-div">
