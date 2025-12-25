@@ -1,0 +1,47 @@
+/* bookForm.ejs and editBook.ejs */
+html {
+  box-sizing: border-box;
+  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: #eef4ed;
+  color: #0b2545;
+}
+
+header {
+  text-align: center;
+}
+
+nav {
+  background-color: #caf0f8;
+  padding: 30px;
+}
+
+nav ul {
+  list-style-type: none;
+  margin-bottom: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  font-weight: 500;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+}
+
+footer {
+  text-align: center;
+}
