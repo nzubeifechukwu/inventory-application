@@ -37,9 +37,45 @@ nav a {
   font-weight: 500;
 }
 
+h1 {
+  margin: 30px;
+}
+
 main {
   display: flex;
   justify-content: center;
+}
+
+form {
+  border: 1px solid #0b2545;
+  padding: 50px;
+  border-radius: 10px;
+  background-color: #caf0f8;
+}
+
+.input-div,
+.select-div {
+  margin-top: 10px;
+}
+
+label {
+  margin-right: 10px;
+}
+
+button {
+  background-color: #0b2545;
+  color: #eef4ed;
+  padding: 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  text-transform: uppercase;
+  /* align-self: center; */
+  margin-top: 20px;
+}
+
+.button-div {
+  text-align: center;
 }
 
 footer {
