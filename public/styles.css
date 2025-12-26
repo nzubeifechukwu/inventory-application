@@ -96,6 +96,10 @@ main span {
   font-weight: 500;
 }
 
+main p.no-books {
+  text-align: center;
+}
+
 button {
   background-color: #0b2545;
   color: #caf0f8;
