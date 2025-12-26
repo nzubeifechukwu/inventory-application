@@ -29,17 +29,23 @@ ALTER TABLE authors ADD CONSTRAINT unique_author UNIQUE (first_name, last_name);
 `;
 
 async function main() {
-  console.log("seeding...");
+  try {
+    console.log("seeding...");
+    const client = new Client({
+      connectionString:
+        process.env.CONNECTION_STRING || process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+    });
 
-  const client = new Client({
-    connectionString: process.env.CONNECTION_STRING || process.env.DATABASE_URL,
-  });
-
-  await client.connect();
-  await client.query(SQL);
-  await client.end();
-
-  console.log("done");
+    await client.connect();
+    await client.query(SQL);
+    await client.end();
+    console.log("done");
+    process.exit(0); // <--- Add this to tell Render the script is finished successfully
+  } catch (err) {
+    console.error("Error seeding database:", err);
+    process.exit(1); // <--- Exit with an error code if it fails
+  }
 }
 
 main();
