@@ -5,7 +5,7 @@ const bookInventoryRouter = require("./routes/bookInventoryRouter");
 const { error } = require("node:console");
 
 const app = express();
-const PORT = 3000;
+const PORT = 3000 || 10000;
 const assetsPath = path.join(__dirname, "public");
 
 app.set("views", path.join(__dirname, "views"));

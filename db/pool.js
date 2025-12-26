@@ -3,4 +3,7 @@ const { Pool } = require("pg");
 
 module.exports = new Pool({
   connectionString: process.env.CONNECTION_STRING || process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false, // Required for Render's free tier
+  },
 });
